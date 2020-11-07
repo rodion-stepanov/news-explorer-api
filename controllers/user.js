@@ -10,7 +10,7 @@ const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        next(new NotFoundError('Нет пользователя с таким id'));
       }
       res
         .status(200)

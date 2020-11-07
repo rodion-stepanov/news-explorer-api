@@ -38,19 +38,19 @@ const deleteArticle = (req, res, next) => {
   Article.findById(req.params.cardId)
     .then((article) => {
       if (!article) {
-        throw new NotFoundError('Нет статьи с таким id');
+        next(new NotFoundError('Нет статьи с таким id'));
       } else if (String(article.owner) === req.user.id) {
         Article.findByIdAndDelete(req.params.id)
           .then((articleData) => {
             if (!articleData) {
-              throw new NotFoundError('Нет статьи с таким id');
+              next(new NotFoundError('Нет статьи с таким id'));
             }
             res
               .status(200)
               .send(articleData);
           })
           .catch(next);
-      } else { throw new ForbiddenError('Нельзя удалять чужую статью'); }
+      } else { next(new ForbiddenError('Нельзя удалять чужую статью')); }
     }).catch(next);
 };
 
