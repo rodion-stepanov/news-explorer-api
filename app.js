@@ -9,11 +9,11 @@ const router = require('./routes/index');
 const errorHandler = require('./middlewares/errorHandler');
 const limiter = require('./middlewares/rateLimiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { PORT, DATABASE } = require('./config');
+const { SERVER_PORT, MONGODB } = require('./config');
 
 const app = express();
 
-mongoose.connect(DATABASE, {
+mongoose.connect(MONGODB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -35,6 +35,6 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`App listening on port ${SERVER_PORT}`);
 });

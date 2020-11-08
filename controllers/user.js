@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config');
+const {
+  SECRET_STR, INCORRECT_ERROR_MESSAGE, INCORRECT_ID_MESSAGE,
+  USER_ID_ERROR_MESSAGE, USER_DUBLICATE_ERROR_MESSAGE,
+} = require('../config');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflict-err');
@@ -10,7 +13,8 @@ const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Нет пользователя с таким id'));
+        next(new NotFoundError(USER_ID_ERROR_MESSAGE));
+        return;
       }
       res
         .status(200)
@@ -18,7 +22,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new IncorrectReqError('Ошибка валидации ID'));
+        next(new IncorrectReqError(INCORRECT_ID_MESSAGE));
       } else {
         next(err);
       }
@@ -36,7 +40,7 @@ const createUser = (req, res, next) => {
             .send({
               data:
               {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 name: user.name,
               },
@@ -44,10 +48,11 @@ const createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.name === 'MongoError' && err.code === 11000) {
-            next(new ConflictError('Пользователь с таким email уже существует'));
+            next(new ConflictError(USER_DUBLICATE_ERROR_MESSAGE));
+            return;
           }
           if (err.name === 'ValidationError') {
-            next(new IncorrectReqError('Некорректные данные'));
+            next(new IncorrectReqError(INCORRECT_ERROR_MESSAGE));
           } else {
             next(err);
           }
@@ -60,14 +65,15 @@ const login = (req, res, next) => {
   User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        next(new NotFoundError(USER_ID_ERROR_MESSAGE));
+        return;
       }
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, SECRET_STR, { expiresIn: '7d' });
       res.send({ token });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new IncorrectReqError('Некорректные данные'));
+        next(new IncorrectReqError(INCORRECT_ERROR_MESSAGE));
       } else {
         next(err);
       }
