@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -6,18 +7,19 @@ const cors = require('cors');
 const helmet = require('helmet');
 const router = require('./routes/index');
 const errorHandler = require('./middlewares/errorHandler');
+const limiter = require('./middlewares/rateLimiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-require('dotenv').config();
+const { PORT, DATABASE } = require('./config');
 
 const app = express();
-const { PORT = 3000 } = process.env;
 
-mongoose.connect('mongodb://localhost:27017/newsdb', {
+mongoose.connect(DATABASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+app.use(limiter);
 app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
