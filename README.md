@@ -3,9 +3,9 @@
 ## Описание
 Бэкэнд дипломного проекта NewsExplorer с регистрацией, авторизацией и роутами.
 Сайт для поиска новостей и сохранения их в личном кабинете.
-Доступен по ссылке: [http://news.rodion.students.nomoreparties.xyz/]
+Доступен по ссылке: http://news.rodion.students.nomoreparties.xyz/
 
-Работает в связке с собственным фронтэндом: [https://github.com/Rodion257/news-explorer-frontend]
+Работает в связке с собственным фронтэндом: https://github.com/Rodion257/news-explorer-frontend
 
 ## Технологии
 Сделано на Express, подключена и настроена база данных MongoDB, созданы модели,
