@@ -3,7 +3,6 @@
 ## Описание
 Бэкэнд дипломного проекта NewsExplorer с регистрацией, авторизацией и роутами.
 Сайт для поиска новостей и сохранения их в личном кабинете.
-Доступен по ссылке: http://news.rodion.students.nomoreparties.xyz/
 
 ## Технологии
 Сделано на Express, подключена и настроена база данных MongoDB, созданы модели,
@@ -11,9 +10,9 @@
 
 ## Установка 
 1. Клонировать этот репозиторий:
-    + git clone https://github.com/Rodion257/news-explorer-api.git
+    + git clone https://github.com/rodion-stepanov/news-explorer-api.git
 2. Клонировать репозиторий с фронтэндом:
-    + git clone https://github.com/Rodion257/news-explorer-frontend.git
+    + git clone https://github.com/rodion-stepanov/news-explorer-frontend.git
 2. Установить зависимости в каждом проекте:
     + npm install
 3. Запустить каждый проект: 
